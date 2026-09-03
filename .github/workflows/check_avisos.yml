@@ -35,8 +35,12 @@ jobs:
 
       - name: Guardar novo estado no repositório
         run: |
-          git config user.name "avisos-bot"
-          git config user.email "avisos-bot@users.noreply.github.com"
-          git add avisos_state.json
-          git diff --staged --quiet || git commit -m "Atualizar estado dos avisos"
-          git push
+          if [ -f avisos_state.json ]; then
+            git config user.name "avisos-bot"
+            git config user.email "avisos-bot@users.noreply.github.com"
+            git add avisos_state.json
+            git diff --staged --quiet || git commit -m "Atualizar estado dos avisos"
+            git push
+          else
+            echo "Nada para guardar (execução fora da janela horária ou sem alterações)."
+          fi
